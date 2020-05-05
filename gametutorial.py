@@ -67,6 +67,7 @@ enemy_size = (enemy_width, enemy_height)
 enemy_x = 100
 enemy_y = 300
 enemy_loc = (enemy_x, enemy_y)
+move_right = True
 
 enemy_image = pygame.image.load("images/enemy.png")
 enemy_image = pygame.transform.scale(enemy_image, enemy_size)
@@ -99,6 +100,19 @@ while finished is not True:
         player_x += 5
 
     player_loc = (player_x, player_y)
+
+    #enemy movement
+    if enemy_x >= screen_width - enemy_width * 2:
+        move_right = False
+    elif enemy_x <= enemy_width * 2:
+        move_right = True
+
+    if move_right is True:
+        enemy_x += 5
+    else:
+        enemy_x -= 5
+
+    enemy_loc = (enemy_x, enemy_y)
 
     screen.blit(background_image, (0, 0))
     screen.blit(treasure_image, treasure_loc)
