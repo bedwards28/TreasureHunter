@@ -50,9 +50,9 @@ treasure_width = 40
 treasure_height = 45
 treasure_size = (treasure_width, treasure_height)
 
-object_x = int(screen_width / 2) - int(treasure_width / 2)
-object_y = 50
-treasure_loc = (object_x, object_y)
+treasure_x = int(screen_width / 2) - int(treasure_width / 2)
+treasure_y = 50
+treasure_loc = (treasure_x, treasure_y)
 
 treasure_image = pygame.image.load("images/treasure.png")
 treasure_image = pygame.transform.scale(treasure_image, treasure_size)
@@ -63,13 +63,15 @@ enemy_height = 45
 enemy_size = (enemy_width, enemy_height)
 
 enemy_x = 100
-enemy_y = 300
+enemy_y = 550
 enemy_loc = (enemy_x, enemy_y)
 move_right = True
 
 enemy_image = pygame.image.load("images/enemy.png")
 enemy_image = pygame.transform.scale(enemy_image, enemy_size)
 enemy_image = enemy_image.convert()
+
+enemies = [(enemy_x, enemy_y, move_right)]
 
 font = pygame.font.SysFont("comicsans", 60)
 
@@ -100,26 +102,31 @@ while finished is not True:
     player_loc = (player_x, player_y)
 
     #enemy movement
-    if enemy_x >= screen_width - enemy_width * 2:
-        move_right = False
-    elif enemy_x <= enemy_width * 2:
-        move_right = True
+    enemy_index = 0
+    for enemy_x, enemy_y, move_right in enemies:
+        if enemy_x >= screen_width - enemy_width * 2:
+            move_right = False
+        elif enemy_x <= enemy_width * 2:
+            move_right = True
 
-    if move_right is True:
-        enemy_x += 5 * level
-    else:
-        enemy_x -= 5 * level
+        if move_right is True:
+            enemy_x += 5 * level
+        else:
+            enemy_x -= 5 * level
 
-    enemy_loc = (enemy_x, enemy_y)
+        #enemy_loc = (enemy_x, enemy_y)
+        enemies[enemy_index] = (enemy_x, enemy_y, move_right)
+        enemy_index += 1
 
     #draw objects on screen
     screen.blit(background_image, (0, 0))
     screen.blit(treasure_image, treasure_loc)
     screen.blit(player_image, player_loc)
-    screen.blit(enemy_image, enemy_loc)
+    for enemy_x, enemy_y, move_right in enemies:
+        screen.blit(enemy_image, (enemy_x, enemy_y))
 
     #check is player collides with treasure
-    if collision_check(player_x, player_y, object_x, object_y):
+    if collision_check(player_x, player_y, treasure_x, treasure_y):
         # update level
         level += 1
 
@@ -137,21 +144,28 @@ while finished is not True:
         player_x = start_x
         player_y = start_y
 
+        #add enemy
+        enemy_x -= 75
+        enemy_y -= 125
+        #enemy_loc = (enemy_x, enemy_y)
+        enemies.append((enemy_x, enemy_y, False))
+
     #check if player collides with an enemy
-    if collision_check(player_x, player_y, enemy_x, enemy_y):
-        #display loss message
-        text_loss = font.render("The enemy caught you!", True, (100, 0, 100))
-        text_loc = \
-            (int(screen_width / 2 - text_loss.get_width() / 2), \
-            int(screen_height / 2 - text_loss.get_height() / 2))
+    for enemy_x, enemy_y, move_right in enemies:
+        if collision_check(player_x, player_y, enemy_x, enemy_y):
+            #display loss message
+            text_loss = font.render("The enemy caught you!", True, (100, 0, 100))
+            text_loc = \
+                (int(screen_width / 2 - text_loss.get_width() / 2), \
+                int(screen_height / 2 - text_loss.get_height() / 2))
 
-        screen.blit(text_loss, text_loc)
-        pygame.display.flip()
-        frame.tick(1)
+            screen.blit(text_loss, text_loc)
+            pygame.display.flip()
+            frame.tick(1)
 
-        # reset player position
-        player_x = start_x
-        player_y = start_y
+            # reset player position
+            player_x = start_x
+            player_y = start_y
 
     pygame.display.flip()
     frame.tick(30)
