@@ -2,17 +2,15 @@
 
 import pygame
 
-def treasure_collision_check(player_x, player_y, treasure_x, treasure_y):
-    '''Checks to see if player has collided with the treasure'''
+def collision_check(player_x, player_y, object_x, object_y):
+    '''Checks to see if player has collided with the treasure or enemies'''
 
     global player_width, player_height, treasure_width, treasure_height
 
     collision_state = False
 
-    # refactored collision check
-    if player_x + player_width >= treasure_x and player_x <= treasure_x + treasure_width:
-        if player_y + player_height >= treasure_y and player_y <= treasure_y + treasure_height:
-            #screen.blit(text_win, text_loc)
+    if player_x + player_width >= object_x and player_x <= object_x + treasure_width:
+        if player_y + player_height >= object_y and player_y <= object_y + treasure_height:
             collision_state = True
 
     return collision_state
@@ -52,9 +50,9 @@ treasure_width = 40
 treasure_height = 45
 treasure_size = (treasure_width, treasure_height)
 
-treasure_x = int(screen_width / 2) - int(treasure_width / 2)
-treasure_y = 50
-treasure_loc = (treasure_x, treasure_y)
+object_x = int(screen_width / 2) - int(treasure_width / 2)
+object_y = 50
+treasure_loc = (object_x, object_y)
 
 treasure_image = pygame.image.load("images/treasure.png")
 treasure_image = pygame.transform.scale(treasure_image, treasure_size)
@@ -119,7 +117,7 @@ while finished is not True:
     screen.blit(player_image, player_loc)
     screen.blit(enemy_image, enemy_loc)
 
-    if treasure_collision_check(player_x, player_y, treasure_x, treasure_y):
+    if collision_check(player_x, player_y, object_x, object_y):
         # update level
         level += 1
 
