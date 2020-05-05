@@ -106,9 +106,9 @@ while finished is not True:
         move_right = True
 
     if move_right is True:
-        enemy_x += 5
+        enemy_x += 5 * level
     else:
-        enemy_x -= 5
+        enemy_x -= 5 * level
 
     enemy_loc = (enemy_x, enemy_y)
 
