@@ -112,11 +112,13 @@ while finished is not True:
 
     enemy_loc = (enemy_x, enemy_y)
 
+    #draw objects on screen
     screen.blit(background_image, (0, 0))
     screen.blit(treasure_image, treasure_loc)
     screen.blit(player_image, player_loc)
     screen.blit(enemy_image, enemy_loc)
 
+    #check is player collides with treasure
     if collision_check(player_x, player_y, object_x, object_y):
         # update level
         level += 1
@@ -128,6 +130,22 @@ while finished is not True:
             int(screen_height / 2 - text_win.get_height() / 2))
 
         screen.blit(text_win, text_loc)
+        pygame.display.flip()
+        frame.tick(1)
+
+        # reset player position
+        player_x = start_x
+        player_y = start_y
+
+    #check if player collides with an enemy
+    if collision_check(player_x, player_y, enemy_x, enemy_y):
+        #display loss message
+        text_loss = font.render("The enemy caught you!", True, (100, 0, 100))
+        text_loc = \
+            (int(screen_width / 2 - text_loss.get_width() / 2), \
+            int(screen_height / 2 - text_loss.get_height() / 2))
+
+        screen.blit(text_loss, text_loc)
         pygame.display.flip()
         frame.tick(1)
 
