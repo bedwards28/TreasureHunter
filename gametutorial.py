@@ -9,20 +9,6 @@ def treasure_collision_check(player_x, player_y, treasure_x, treasure_y):
 
     collision_state = False
 
-    # if player_y >= treasure_y and player_y <= treasure_y + treasure_height:
-    #     if player_x >= treasure_x and player_x <= treasure_x + treasure_height:
-    #         screen.blit(text_win, (300, 300))
-    #     elif player_x + player_width >= treasure_x and \
-    #         player_x + player_width <= treasure_x + treasure_width:
-    #             screen.blit(text_win, (300, 300))
-    # elif player_y + player_height >= treasure_y and \
-    #     player_y + player_height <= treasure_y + treasure_height:
-    #         if player_x >= treasure_x and player_x <= treasure_x + treasure_height:
-    #             screen.blit(text_win, (300, 300))
-    #         elif player_x + player_width >= treasure_x and \
-    #             player_x + player_width <= treasure_x + treasure_width:
-    #                 screen.blit(text_win, (300, 300))
-
     # refactored collision check
     if player_x + player_width >= treasure_x and player_x <= treasure_x + treasure_width:
         if player_y + player_height >= treasure_y and player_y <= treasure_y + treasure_height:
@@ -72,7 +58,6 @@ treasure_loc = (treasure_x, treasure_y)
 
 treasure_image = pygame.image.load("images/treasure.png")
 treasure_image = pygame.transform.scale(treasure_image, treasure_size)
-#screen.blit(treasure_image, treasure_loc)
 
 #enemy
 enemy_width = 40
@@ -88,10 +73,6 @@ enemy_image = pygame.transform.scale(enemy_image, enemy_size)
 enemy_image = enemy_image.convert()
 
 font = pygame.font.SysFont("comicsans", 60)
-#text_win = font.render("Great Job!", True, (0, 0, 0))
-# text_loc = \
-#     (int(screen_width / 2 - text_win.get_width() / 2), \
-#     int(screen_height / 2 - text_win.get_height() / 2))
 
 level = 1
 
